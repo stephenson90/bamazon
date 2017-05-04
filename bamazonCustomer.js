@@ -13,6 +13,10 @@ var sumOrder;
 var res;
 var proId;
 var stockNbr;
+var userAnswers;
+//askQuestion();
+
+
 
 connection.query('SELECT * FROM products', function (error, results) {
 
@@ -28,7 +32,7 @@ else{
   
 
 }
-stockNbr = res[proId].stock_quantity - UserQuant;
+//stockNbr = res[proId].stock_quantity - UserQuant;
 // connection.query('UPDATE products SET? WHERE?',[{
 // 	stock_quantity:stockNbr},{item_id:proId}], function (error, results) {
 // 	if(error){console.log("err");}
@@ -39,15 +43,17 @@ stockNbr = res[proId].stock_quantity - UserQuant;
 // 		});
 askQuestion();
 
+//computation();
+
 }
 
   
 });
 
 connection.end();
-
-
+	
  function askQuestion(){
+
 
 	inquirer.prompt([
 {
@@ -63,10 +69,13 @@ connection.end();
 ]).then(function(answers){
 	UserQuant = parseInt(answers.number);
 	proId = parseInt(answers.id);
+	userAnswers = answers;
 
 	if(UserQuant<=res[proId].stock_quantity){
 		sumOrder=UserQuant*res[proId].price;
 		console.log("Your total price for this order is: $"+sumOrder);
+		update();
+
 		
 	}
 
@@ -76,21 +85,37 @@ connection.end();
 
 
 
-
 });
-}.then(update();)
 
-function update(){
-	var stockNbr = res[proId].stock_quantity - UserQuant;
-
-	connection.query('UPDATE products SET? WHERE?',[{
-	stock_quantity:stockNbr},{item_id:proId}], function (error, results) {
-	if(error){console.log("err");}
-
-		else{
-			console.log(results);
-		}
-
-
-});
 }
+
+// function computation(){
+// 	askQuestion();
+
+// 	if(UserQuant<=res[proId].stock_quantity){
+// 		sumOrder=UserQuant*res[proId].price;
+// 		console.log("Your total price for this order is: $"+sumOrder);
+// 		update();
+
+		
+// 	}
+
+// 	else{
+// 		console.log(" Due to insuficient items available we are unable to place your order");
+// 	}
+// }
+
+// function update(){
+// 	var stockNbr = res[proId].stock_quantity - UserQuant;
+
+// 	connection.query('UPDATE products SET? WHERE?',[{
+// 	stock_quantity:stockNbr},{item_id:proId}], function (error, results) {
+// 	if(error){console.log("err");}
+
+// 		else{
+// 			console.log(results);
+// 		}
+
+
+// });
+// }
